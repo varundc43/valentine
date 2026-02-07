@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Be My Valentine 💘</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      background: linear-gradient(135deg, #ff4d6d, #ffb3c6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.18);
+      padding: 40px;
+      border-radius: 25px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+      max-width: 420px;
+      animation: popIn 1s ease;
+    }
+
+    h1 {
+      font-size: 2.4em;
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-size: 1.2em;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      margin-top: 20px;
+      position: relative;
+    }
+
+    button {
+      background: #fff;
+      border: none;
+      padding: 15px 35px;
+      font-size: 1.2em;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+
+    #yesBtn {
+      color: #ff4d6d;
+    }
+
+    #noBtn {
+      color: #999;
+      position: absolute;
+    }
+
+    button:hover {
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    img {
+      margin-top: 25px;
+      max-width: 100%;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    }
+
+    .hearts {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    .heart {
+      position: absolute;
+      font-size: 24px;
+      animation: float 6s infinite ease-in;
+    }
+
+    @keyframes float {
+      from {
+        transform: translateY(100vh);
+        opacity: 1;
+      }
+      to {
+        transform: translateY(-10vh);
+        opacity: 0;
+      }
+    }
+
+    @keyframes popIn {
+      from { transform: scale(0.6); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+
+  <audio id="music" loop>
+    <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_7c0e8c7a7e.mp3" type="audio/mpeg">
+  </audio>
+
+  <div class="hearts"></div>
+
+  <div class="card" id="questionCard">
+    <h1>Will you be my Valentine? 💘</h1>
+    <p>(Choose wisely 😏)</p>
+
+    <div class="buttons">
+      <button id="yesBtn">YES 💖</button>
+      <button id="noBtn">NO 🙃</button>
+    </div>
+  </div>
+
+  <div class="card hidden" id="yesCard">
+    <h1>HAHA YOU’RE STUCK WITH ME 🥰</h1>
+    <p>
+      Best click of your life 💕  
+      Valentine status: CONFIRMED 🎉
+    </p>
+
+    <img src="https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif" alt="Celebration GIF">
+  </div>
+
+  <script>
+    const yesBtn = document.getElementById("yesBtn");
+    const noBtn = document.getElementById("noBtn");
+    const music = document.getElementById("music");
+
+    // Runaway NO button
+    noBtn.addEventListener("mouseenter", () => {
+      const x = Math.random() * 250 - 125;
+      const y = Math.random() * 150 - 75;
+      noBtn.style.transform = `translate(${x}px, ${y}px)`;
+    });
+
+    // YES button logic
+    yesBtn.addEventListener("click", () => {
+      document.getElementById("questionCard").classList.add("hidden");
+      document.getElementById("yesCard").classList.remove("hidden");
+      music.play();
+      createHearts();
+    });
+
+    function createHearts() {
+      const heartsContainer = document.querySelector(".hearts");
+      for (let i = 0; i < 40; i++) {
+        const heart = document.createElement("div");
+        heart.className = "heart";
+        heart.innerHTML = ["💖","💘","💝","💕"][Math.floor(Math.random()*4)];
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.animationDuration = (Math.random() * 3 + 3) + "s";
+        heartsContainer.appendChild(heart);
+      }
+    }
+  </script>
+
+</body>
+</html>
