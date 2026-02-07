@@ -2,12 +2,19 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Be My Valentine 💘</title>
+
+  <!-- Google Font for consistency -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+
   <style>
     body {
       margin: 0;
       height: 100vh;
-      font-family: 'Comic Sans MS', cursive, sans-serif;
+      font-family: 'Montserrat', sans-serif;
       background: linear-gradient(135deg, #ff4d6d, #ffb3c6);
       display: flex;
       align-items: center;
@@ -133,7 +140,8 @@
 </head>
 <body>
 
-  <audio id="boing" src="https://freesound.org/data/previews/258/258183_4486188-lq.mp3"></audio>
+  <!-- Kissing sound -->
+  <audio id="boing" src="https://freesound.org/data/previews/387/387990_6957400-lq.mp3"></audio>
   <audio id="drumroll" src="https://freesound.org/data/previews/82/82509_1022650-lq.mp3"></audio>
   <audio id="cheer" src="https://freesound.org/data/previews/415/415209_5121236-lq.mp3"></audio>
 
@@ -180,7 +188,7 @@
     <p>Forever and always 😘</p>
 
     <!-- FINAL CUSTOM IMAGE -->
-    <img src="final2.jpeg" alt="I love you Avishi">
+    <img src="final2.jpg" alt="I love you Avishi">
   </div>
 
   <script>
@@ -238,7 +246,7 @@
         celebrationCard.classList.add("hidden");
         secondQuestion.classList.remove("hidden");
         musicCheer.play();
-      }, 4000); // 4 seconds celebration
+      }, 4000);
     });
 
     // Haa Varun click -> final message
