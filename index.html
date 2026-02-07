@@ -129,35 +129,6 @@
       0% { transform: translateY(-20px) rotate(0deg); }
       100% { transform: translateY(110vh) rotate(360deg); }
     }
-
-    /* Modal */
-    .modal {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.6);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-      display: none;
-    }
-    .modal-content {
-      background: #fff;
-      color: #333;
-      padding: 30px;
-      border-radius: 20px;
-      width: 90%;
-      max-width: 400px;
-      text-align: center;
-    }
-    .modal-content button {
-      margin-top: 20px;
-      width: 120px;
-      border-radius: 40px;
-    }
   </style>
 </head>
 <body>
@@ -169,6 +140,7 @@
   <div class="confetti" id="confetti"></div>
   <div class="hearts"></div>
 
+  <!-- MAIN QUESTION -->
   <div class="card" id="questionCard">
     <h1>Will you be my Valentine? 💘</h1>
     <p>(Choose wisely 😏)</p>
@@ -179,40 +151,51 @@
     </div>
   </div>
 
-  <div class="card hidden" id="yesCard">
+  <!-- CELEBRATION CARD -->
+  <div class="card hidden" id="celebrationCard">
     <h1>HAHA YOU’RE STUCK WITH ME 🥰</h1>
     <p>
       Best click of your life 💕  
       Valentine status: CONFIRMED 🎉
     </p>
 
-    <img src="https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif" alt="Celebration GIF">
+    <!-- Custom image (replace "custom.jpg" with your file) -->
+    <img id="customImage" src="custom.jpg" alt="Custom Image">
   </div>
 
-  <div class="modal" id="modal">
-    <div class="modal-content">
-      <h2>Are you sure? 😏</h2>
-      <p>Because once you say YES, there’s no turning back.</p>
-      <button id="confirmYes">YES (DUH)</button>
-      <button id="confirmNo">No (impossible)</button>
+  <!-- SECOND QUESTION -->
+  <div class="card hidden" id="secondQuestion">
+    <h1>Baby.. Sunn naa</h1>
+    <p>Answer correctly 😌</p>
+
+    <div class="buttons">
+      <button id="haaBtn">Haa Varun</button>
+      <button id="whateverBtn">Whatever</button>
     </div>
+  </div>
+
+  <!-- FINAL MESSAGE -->
+  <div class="card hidden" id="finalCard">
+    <h1>I love you Avishi 💖</h1>
+    <p>Forever and always 😘</p>
   </div>
 
   <script>
     const yesBtn = document.getElementById("yesBtn");
     const noBtn = document.getElementById("noBtn");
+    const haaBtn = document.getElementById("haaBtn");
+    const whateverBtn = document.getElementById("whateverBtn");
+
+    const questionCard = document.getElementById("questionCard");
+    const celebrationCard = document.getElementById("celebrationCard");
+    const secondQuestion = document.getElementById("secondQuestion");
+    const finalCard = document.getElementById("finalCard");
+
     const musicBoing = document.getElementById("boing");
     const musicDrum = document.getElementById("drumroll");
     const musicCheer = document.getElementById("cheer");
 
-    const modal = document.getElementById("modal");
-    const confirmYes = document.getElementById("confirmYes");
-    const confirmNo = document.getElementById("confirmNo");
-
-    const questionCard = document.getElementById("questionCard");
-    const yesCard = document.getElementById("yesCard");
-
-    // Funny NO button messages
+    // NO button messages
     const noMessages = [
       "Stop trying to say no 😤",
       "Not happening!",
@@ -222,7 +205,7 @@
       "Why are you like this?"
     ];
 
-    // NO button runs away
+    // NO button runs away and changes text
     noBtn.addEventListener("mouseenter", () => {
       const x = Math.random() * 250 - 125;
       const y = Math.random() * 150 - 75;
@@ -232,42 +215,43 @@
       musicBoing.play();
     });
 
-    // YES button playful chase
+    // YES button slight move
     yesBtn.addEventListener("mouseenter", () => {
       const x = Math.random() * 40 - 20;
       const y = Math.random() * 20 - 10;
       yesBtn.style.transform = `translate(${x}px, ${y}px)`;
     });
 
-    // YES button click opens confirmation modal
+    // YES click -> celebration + confetti -> second question
     yesBtn.addEventListener("click", () => {
-      modal.style.display = "flex";
-    });
-
-    // Modal button actions
-    confirmYes.addEventListener("click", () => {
-      modal.style.display = "none";
-      triggerCelebration();
-    });
-
-    confirmNo.addEventListener("click", () => {
-      modal.style.display = "none";
-      // Fake rejection, but still ends in YES after a second
-      setTimeout(triggerCelebration, 800);
-    });
-
-    function triggerCelebration() {
       questionCard.classList.add("hidden");
-      yesCard.classList.remove("hidden");
+      celebrationCard.classList.remove("hidden");
       musicDrum.play();
       createHearts();
       startConfetti();
 
-      // Hidden surprise message
+      // After celebration, show second question
       setTimeout(() => {
-        alert("🎁 Secret Level Unlocked:\nBabyyyy Sunn Naa.. I love you 😘");
-      }, 3000);
-    }
+        celebrationCard.classList.add("hidden");
+        secondQuestion.classList.remove("hidden");
+        musicCheer.play();
+      }, 4000); // 4 seconds celebration
+    });
+
+    // Haa Varun click -> final message
+    haaBtn.addEventListener("click", () => {
+      secondQuestion.classList.add("hidden");
+      finalCard.classList.remove("hidden");
+    });
+
+    // Whatever button runs away
+    whateverBtn.addEventListener("mouseenter", () => {
+      const x = Math.random() * 250 - 125;
+      const y = Math.random() * 150 - 75;
+      whateverBtn.style.transform = `translate(${x}px, ${y}px)`;
+      musicBoing.currentTime = 0;
+      musicBoing.play();
+    });
 
     // Hearts animation
     function createHearts() {
