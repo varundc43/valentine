@@ -105,14 +105,68 @@
       from { transform: scale(0.6); opacity: 0; }
       to { transform: scale(1); opacity: 1; }
     }
+
+    /* Confetti */
+    .confetti {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 999;
+    }
+    .confetti-piece {
+      position: absolute;
+      width: 10px;
+      height: 14px;
+      background: #fff;
+      opacity: 0.9;
+      animation: fall 4s linear infinite;
+    }
+    @keyframes fall {
+      0% { transform: translateY(-20px) rotate(0deg); }
+      100% { transform: translateY(110vh) rotate(360deg); }
+    }
+
+    /* Modal */
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      display: none;
+    }
+    .modal-content {
+      background: #fff;
+      color: #333;
+      padding: 30px;
+      border-radius: 20px;
+      width: 90%;
+      max-width: 400px;
+      text-align: center;
+    }
+    .modal-content button {
+      margin-top: 20px;
+      width: 120px;
+      border-radius: 40px;
+    }
   </style>
 </head>
 <body>
 
-  <audio id="music" loop>
-    <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_7c0e8c7a7e.mp3" type="audio/mpeg">
-  </audio>
+  <audio id="boing" src="https://freesound.org/data/previews/258/258183_4486188-lq.mp3"></audio>
+  <audio id="drumroll" src="https://freesound.org/data/previews/82/82509_1022650-lq.mp3"></audio>
+  <audio id="cheer" src="https://freesound.org/data/previews/415/415209_5121236-lq.mp3"></audio>
 
+  <div class="confetti" id="confetti"></div>
   <div class="hearts"></div>
 
   <div class="card" id="questionCard">
@@ -135,26 +189,87 @@
     <img src="https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif" alt="Celebration GIF">
   </div>
 
+  <div class="modal" id="modal">
+    <div class="modal-content">
+      <h2>Are you sure? 😏</h2>
+      <p>Because once you say YES, there’s no turning back.</p>
+      <button id="confirmYes">YES (DUH)</button>
+      <button id="confirmNo">No (impossible)</button>
+    </div>
+  </div>
+
   <script>
     const yesBtn = document.getElementById("yesBtn");
     const noBtn = document.getElementById("noBtn");
-    const music = document.getElementById("music");
+    const musicBoing = document.getElementById("boing");
+    const musicDrum = document.getElementById("drumroll");
+    const musicCheer = document.getElementById("cheer");
 
-    // Runaway NO button
+    const modal = document.getElementById("modal");
+    const confirmYes = document.getElementById("confirmYes");
+    const confirmNo = document.getElementById("confirmNo");
+
+    const questionCard = document.getElementById("questionCard");
+    const yesCard = document.getElementById("yesCard");
+
+    // Funny NO button messages
+    const noMessages = [
+      "Stop trying to say no 😤",
+      "Not happening!",
+      "Try again 😏",
+      "No is not an option!",
+      "You can’t escape love 💘",
+      "Why are you like this?"
+    ];
+
+    // NO button runs away
     noBtn.addEventListener("mouseenter", () => {
       const x = Math.random() * 250 - 125;
       const y = Math.random() * 150 - 75;
       noBtn.style.transform = `translate(${x}px, ${y}px)`;
+      noBtn.innerText = noMessages[Math.floor(Math.random() * noMessages.length)];
+      musicBoing.currentTime = 0;
+      musicBoing.play();
     });
 
-    // YES button logic
+    // YES button playful chase
+    yesBtn.addEventListener("mouseenter", () => {
+      const x = Math.random() * 40 - 20;
+      const y = Math.random() * 20 - 10;
+      yesBtn.style.transform = `translate(${x}px, ${y}px)`;
+    });
+
+    // YES button click opens confirmation modal
     yesBtn.addEventListener("click", () => {
-      document.getElementById("questionCard").classList.add("hidden");
-      document.getElementById("yesCard").classList.remove("hidden");
-      music.play();
-      createHearts();
+      modal.style.display = "flex";
     });
 
+    // Modal button actions
+    confirmYes.addEventListener("click", () => {
+      modal.style.display = "none";
+      triggerCelebration();
+    });
+
+    confirmNo.addEventListener("click", () => {
+      modal.style.display = "none";
+      // Fake rejection, but still ends in YES after a second
+      setTimeout(triggerCelebration, 800);
+    });
+
+    function triggerCelebration() {
+      questionCard.classList.add("hidden");
+      yesCard.classList.remove("hidden");
+      musicDrum.play();
+      createHearts();
+      startConfetti();
+
+      // Hidden surprise message
+      setTimeout(() => {
+        alert("🎁 Secret Level Unlocked:\nYou are my Valentine 😘");
+      }, 3000);
+    }
+
+    // Hearts animation
     function createHearts() {
       const heartsContainer = document.querySelector(".hearts");
       for (let i = 0; i < 40; i++) {
@@ -164,6 +279,19 @@
         heart.style.left = Math.random() * 100 + "vw";
         heart.style.animationDuration = (Math.random() * 3 + 3) + "s";
         heartsContainer.appendChild(heart);
+      }
+    }
+
+    // Confetti animation
+    function startConfetti() {
+      const confettiContainer = document.getElementById("confetti");
+      for (let i = 0; i < 80; i++) {
+        const piece = document.createElement("div");
+        piece.className = "confetti-piece";
+        piece.style.left = Math.random() * 100 + "vw";
+        piece.style.background = `hsl(${Math.random() * 360}, 100%, 75%)`;
+        piece.style.animationDuration = (Math.random() * 3 + 3) + "s";
+        confettiContainer.appendChild(piece);
       }
     }
   </script>
